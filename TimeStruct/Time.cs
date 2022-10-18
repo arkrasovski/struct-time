@@ -20,18 +20,56 @@ namespace TimeStruct
         /// <param name="minutes">The variable for minutes.</param>
         public Time(int hours, int minutes)
         {
+            ToTime(hours, minutes, out this.hours, out this.minutes);
+        }
+
+
+        private static void ToTime(int hours, int minutes, out int h, out int m)
+        {
+            if (minutes < 60 && minutes >= 0)
+            {
+                m = minutes;
+            }
+            else if (minutes >= 60)
+            {
+                while (minutes >= 60)
+                {
+                    minutes -= 60;
+                    hours++;
+                }
+
+                m = minutes;
+            }
+            else
+            {
+                while (minutes < 0)
+                {
+                    minutes += 60;
+                    if (hours == 0)
+                    {
+                        hours = 23;
+                    }
+                    else
+                    {
+                        hours--;
+                    }
+                }
+
+                m = minutes;
+            }
+
             if (hours < 24 && hours >= 0)
             {
-                this.hours = hours;
+                h = hours;
             }
-           else if (hours >= 24)
+            else if (hours >= 24)
             {
                 while (hours >= 24)
                 {
                     hours -= 24;
                 }
 
-                this.hours = hours;
+                h = hours;
             }
             else
             {
@@ -40,39 +78,7 @@ namespace TimeStruct
                     hours += 24;
                 }
 
-                this.hours = hours;
-            }
-
-            if (minutes < 60 && minutes >= 0)
-            {
-                this.minutes = minutes;
-            }
-            else if (minutes >= 60)
-            {
-                while (minutes >= 60)
-                {
-                    minutes -= 60;
-                    this.hours++;
-                }
-
-                this.minutes = minutes;
-            }
-            else
-            {
-                while (minutes < 0)
-                {
-                    minutes += 60;
-                    if (this.hours <= 0)
-                    {
-                        this.hours = 23;
-                    }
-                    else
-                    {
-                        this.hours--;
-                    }
-                }
-
-                this.minutes = minutes;
+                h = hours;
             }
         }
 
@@ -99,7 +105,8 @@ namespace TimeStruct
         /// Prints the time.
         /// </summary>
         /// <returns>The time in format hh:mm.</returns>
-        public override string ToString()
+        // public override string ToString()
+        public new string ToString()
         {
             return (this.hours > 9 ? this.hours : "0" + this.hours) + ":" + (this.minutes > 9 ? this.minutes : "0" + this.minutes);
         }
@@ -113,28 +120,6 @@ namespace TimeStruct
         {
             hours = this.hours;
             minutes = this.minutes;
-        }
-    }
-
-    /// <summary>
-    /// Represents the times in 24-hours format.
-    /// </summary>
-    /// <param name="hours">The variable for hours.</param>
-    /// <param name="minutes">The variable for minutes.</param>
-    /// <returns>The joined names.</returns>
-    public static class Program
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Time"/> struct.
-        /// </summary>
-        /// <param name="args">The variable for minutes.</param>
-        public static void Main(string[] args)
-        {
-            Time time = new Time(-25, -160);
-            Console.WriteLine(time.ToString());
-            Console.WriteLine(time.Hours);
-            (int hours, int minutes) = time;
-            Console.WriteLine(hours + ":" + minutes);
         }
     }
 }
